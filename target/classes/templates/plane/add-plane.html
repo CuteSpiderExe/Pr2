@@ -5,10 +5,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-<div th:insert="fragments/header :: defaultheader"></div>
+
 
 <form action="/plane/add" method="post">
-
+    <div th:insert="fragments/header :: defaultheader"></div>
     <input type="text" id="name" name="name" placeholder="Название"><br>
 
     <input type="text" id="year" name="year" placeholder="Год выпуска"><br>

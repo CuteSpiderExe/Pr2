@@ -9,14 +9,17 @@
 <div th:each="el : ${news}">
   <h2 th:text="${el.title}"></h2>
   <h3 th:text="${el.author}"></h3>
+
+  <p th.text="${el.body_text}"></p><br>
+
   <p th:text="${el.views}"></p>
-  <a th:href="'/news/' + ${el.id}">Прочитать статью</a>
+  <p th:text="${el.likes}"></p>
+  <a th:href="'/news/del/'+ ${el.id}" class="btn btn-danger">Удалить</a>
+  <a th:href="'/news/edit/'+ ${el.id}" class="btn btn-warning">Изменить</a>
+
 </div>
-<form method="get" action="/news/search">
-  <input type="text" name="title" id="title">
-  <input type="submit" value="Найти">
-</form>
-<a href="/news/add" class="btn btn-primary">Добавить новость</a>
+
+<a href="/news/" class="btn btn-primary">Назад к новостям</a>
 
 </body>
 </html>
