@@ -4,15 +4,19 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
-public class Dota {
+public class    Dota {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
-
+    @NotEmpty(message = "Поле не может быть пустым")
     String name, tip;
-
+    @NotNull(message = "Поле не может быть пустым")
+    @Min(message = "Количество не может быть отрицательным",value = 0)
     Integer hp , mana, damage;
 
     public Dota(String name, String tip, Integer hp, Integer mana, Integer damage) {

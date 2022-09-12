@@ -6,8 +6,10 @@ import com.example.Test.repositories.DotaRep;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,22 +32,24 @@ public class DotaController {
     }
 
     @GetMapping("/add")
-    public String addView(Model model)
+    public String addView(Model model, Dota dota)
     {
+        model.addAttribute("dota",new Dota());
         return "dota/add-dota";
     }
 
     @PostMapping("/add")
     public String add(
-            @RequestParam("name") String name,
-            @RequestParam("tip") String tip,
-            @RequestParam("hp") Integer hp,
-            @RequestParam("mana") Integer mana,
-            @RequestParam("damage") Integer damage,
+            @ModelAttribute("dota")
+            @Valid Dota newDota,
+            BindingResult bindingResult,
             Model model)
     {
-        Dota dotaOne = new Dota(name,tip,hp,mana,damage);
-        DotaRep.save(dotaOne);
+        if(bindingResult.hasErrors())
+            return "dota/add-dota";
+
+
+        DotaRep.save(newDota);
         return "redirect:/dota/";
     }
 
@@ -80,42 +84,34 @@ public class DotaController {
         return "redirect:/dota/";
     }
     @GetMapping("/edit/{id}")
-    public String edit(
-            @PathVariable("id") Long id,
-            Model model
+    public String edit(@PathVariable("id") Long id, Model model
     )
     {
-        if (!DotaRep.existsById(id)) {
+        if(!DotaRep.existsById(id))
+        {
             return "redirect:/dota/";
         }
-
         Optional<Dota> dota = DotaRep.findById(id);
         ArrayList<Dota> dotaArrayList = new ArrayList<>();
         dota.ifPresent(dotaArrayList::add);
-        model.addAttribute("dota", dotaArrayList);
+        model.addAttribute("dota",dotaArrayList.get(0));
         return "dota/edit-dota";
     }
     @PostMapping("/edit/{id}")
-    public String editDota(
+    public String editGames(
             @PathVariable("id") Long id,
-            @RequestParam("name") String name,
-            @RequestParam("tip") String tip,
-            @RequestParam("hp") Integer hp,
-            @RequestParam("mana") Integer mana,
-            @RequestParam("damage") Integer damage,
+            @ModelAttribute("games") @Valid Dota newDota,
+            BindingResult bindingResult,
             Model model)
     {
-
-        Dota dota = DotaRep.findById(id).orElseThrow();
-
-        dota.setName(name);
-        dota.setTip(tip);
-        dota.setMana(hp);
-        dota.setMana(mana);
-        dota.setDamage(damage);
-
-        DotaRep.save(dota);
-
+        if(!DotaRep.existsById(id))
+        {
+            return "redirect:/dota";
+        }
+        if(bindingResult.hasErrors())
+            return "dota/edit-dota";
+        newDota.setId(id);
+        DotaRep.save(newDota);
         return "redirect:/dota/";
     }
 

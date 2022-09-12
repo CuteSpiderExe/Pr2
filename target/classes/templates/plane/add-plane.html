@@ -7,17 +7,28 @@
 <body>
 
 
-<form action="/plane/add" method="post">
+<form th:object="${plane}" action="/plane/add" method="post">
     <div th:insert="fragments/header :: defaultheader"></div>
-    <input type="text" id="name" name="name" placeholder="Название"><br>
-
-    <input type="text" id="year" name="year" placeholder="Год выпуска"><br>
-
-    <input type="number" id="price" name="price" placeholder="Цена"><br>
-
-    <input type="number" id="kolvo" name="kolvo" placeholder="Кол-во на складе"><br>
-
-    <input type="number" id="engine" name="engine" placeholder="Мощность в лс."><br>
+    <p>Название
+    <input th:field="*{name}" type="text" id="name" name="name" placeholder="Название"><br>
+    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+    </p>
+    <p>Год
+    <input th:field="*{year}" type="text" id="year" name="year" placeholder="Год выпуска"><br>
+    <div th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></div>
+    </p>
+    <p>Цена
+    <input th:field="*{price}" type="number" id="price" name="price" placeholder="Цена"><br>
+    <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+    </p>
+    <p>Кол-во на складе
+    <input th:field="*{kolvo}" type="number" id="kolvo" name="kolvo" placeholder="Кол-во на складе"><br>
+    <div th:if="${#fields.hasErrors('kolvo')}" th:errors="*{kolvo}"></div>
+    </p>
+    <p>Мощность в лс.
+    <input th:field="*{engine}" type="number" id="engine" name="engine" placeholder="Мощность в лс."><br>
+    <div th:if="${#fields.hasErrors('engine')}" th:errors="*{engine}"></div>
+    </p>
     <input type="submit" value="Добавить самолет" class="btn btn-success"><br>
 </form>
 

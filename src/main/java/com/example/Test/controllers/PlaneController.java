@@ -6,8 +6,10 @@ import com.example.Test.repositories.PlaneRep;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,23 +32,25 @@ public class PlaneController {
     }
 
     @GetMapping("/add")
-    public String addView(Model model)
+    public String addView(Model model, Plane plane)
     {
+        model.addAttribute("plane",new Plane());
         return "plane/add-plane";
     }
 
     @PostMapping("/add")
     public String add(
-            @RequestParam("name") String name,
-            @RequestParam("year") String year,
-            @RequestParam("price") Integer price,
-            @RequestParam("kolvo") Integer kolvo,
-            @RequestParam("engine") Integer engine,
+            @ModelAttribute("plane")
+            @Valid Plane newPlane,
+            BindingResult bindingResult,
             Model model)
     {
-        Plane planeOne = new Plane(name,year,price,kolvo,engine);
-        PlaneRep.save(planeOne);
-        return "redirect:/plane/";
+        if(bindingResult.hasErrors())
+            return "plane/add-plane";
+
+
+        PlaneRep.save(newPlane);
+        return "redirect:/palne/";
     }
 
     @GetMapping("/search")
@@ -80,43 +84,34 @@ public class PlaneController {
         return "redirect:/plane/";
     }
     @GetMapping("/edit/{id}")
-    public String edit(
-            @PathVariable("id") Long id,
-            Model model
+    public String edit(@PathVariable("id") Long id, Model model
     )
     {
-        if (!PlaneRep.existsById(id)) {
+        if(!PlaneRep.existsById(id))
+        {
             return "redirect:/plane/";
         }
-
         Optional<Plane> plane = PlaneRep.findById(id);
         ArrayList<Plane> planeArrayList = new ArrayList<>();
         plane.ifPresent(planeArrayList::add);
-        model.addAttribute("plane", planeArrayList);
+        model.addAttribute("plane",planeArrayList.get(0));
         return "plane/edit-plane";
     }
     @PostMapping("/edit/{id}")
-    public String editPlane(
+    public String editGames(
             @PathVariable("id") Long id,
-            @RequestParam("name") String name,
-            @RequestParam("year") String year,
-            @RequestParam("price") Integer price,
-            @RequestParam("kolvo") Integer kolvo,
-            @RequestParam("engine") Integer engine,
+            @ModelAttribute("plane") @Valid Plane newPlane,
+            BindingResult bindingResult,
             Model model)
-
     {
-
-        Plane plane = PlaneRep.findById(id).orElseThrow();
-
-        plane.setName(name);
-        plane.setYear(year);
-        plane.setPrice(price);
-        plane.setKolvo(kolvo);
-        plane.setEngine(engine);
-
-        PlaneRep.save(plane);
-
-        return "redirect:/plane/";
+        if(!PlaneRep.existsById(id))
+        {
+            return "redirect:/plane";
+        }
+        if(bindingResult.hasErrors())
+            return "plane/edit-plane";
+        newPlane.setId(id);
+        PlaneRep.save(newPlane);
+        return "redirect:/[plane]/";
     }
 }
