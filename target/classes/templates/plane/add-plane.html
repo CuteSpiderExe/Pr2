@@ -5,10 +5,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-
-
+<div th:insert="fragments/header :: defaultheader"></div>
 <form th:object="${plane}" action="/plane/add" method="post">
-    <div th:insert="fragments/header :: defaultheader"></div>
     <p>Название
     <input th:field="*{name}" type="text" id="name" name="name" placeholder="Название"><br>
     <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>

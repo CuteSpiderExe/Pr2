@@ -50,7 +50,7 @@ public class PlaneController {
 
 
         PlaneRep.save(newPlane);
-        return "redirect:/palne/";
+        return "redirect:/plane/";
     }
 
     @GetMapping("/search")
@@ -112,6 +112,6 @@ public class PlaneController {
             return "plane/edit-plane";
         newPlane.setId(id);
         PlaneRep.save(newPlane);
-        return "redirect:/[plane]/";
+        return "redirect:/plane/";
     }
 }

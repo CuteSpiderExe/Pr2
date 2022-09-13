@@ -12,8 +12,14 @@
                     <li><a href="http://localhost:8080/news/" class="nav-link px-4 text-white">News</a></li>
                     <li><a href="http://localhost:8080/plane/" class="nav-link px-4 text-white">Plane</a></li>
                     <li><a href="http://localhost:8080/dota/" class="nav-link px-4 text-white">Dota</a></li>
+                    <li><a href="http://localhost:8080/personOTM/" class="nav-link px-4 text-white">OneToMany</a></li>
+                    <li><a href="http://localhost:8080/personOTO/" class="nav-link px-4 text-white">OneToOne</a></li>
+                    <li><a href="http://localhost:8080/person/" class="nav-link px-4 text-white">Person</a></li>
                 </ul>
-
+                </h1>
+                <form th:action="@{/logout}" method="post">
+                    <input type="submit" value="Sign Out"/>
+                </form>
             </div>
         </div>
     </header>
